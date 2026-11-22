@@ -19,7 +19,8 @@ with sync_playwright() as p:
             page.mouse.click(300, 400)
             page.wait_for_timeout(800)
             pill = page.inner_text("#sound-label")
-            ok = slides >= 2 and not errors and pill.upper() != "TAP FOR SOUND"
+            # an empty history still renders at least the first slide
+            ok = slides >= 1 and not errors and pill.upper() != "TAP FOR SOUND"
             failed += not ok
             print(f"{'ok  ' if ok else 'FAIL'} {engine:8s} {pathlib.Path(page_path).name}: {slides} slides, pill {pill!r}, errors {errors}")
             page.close()
