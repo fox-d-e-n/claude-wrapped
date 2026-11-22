@@ -1,0 +1,47 @@
+name: test
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+
+jobs:
+  scripts:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.10", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Selftests (fixture transcripts, render escaping)
+        run: |
+          python skills/claude-wrapped/scripts/wrapped_stats.py --selftest
+          python skills/claude-wrapped/scripts/render.py --selftest
+      - name: A new user with no transcripts
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/projects"
+          python skills/claude-wrapped/scripts/wrapped_stats.py --root "$RUNNER_TEMP/projects" --out "$RUNNER_TEMP/empty.json"
+          python skills/claude-wrapped/scripts/render.py "$RUNNER_TEMP/empty.json" -o "$RUNNER_TEMP/empty.html"
+      - name: Render the demo
+        run: python skills/claude-wrapped/scripts/render.py examples/demo-stats.json examples/demo-story.json -o demo.html
+
+  browsers:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install playwright==1.63.0 && python -m playwright install --with-deps chromium firefox webkit
+      - run: |
+          python skills/claude-wrapped/scripts/render.py examples/demo-stats.json examples/demo-story.json -o demo.html
+          mkdir -p empty && python skills/claude-wrapped/scripts/wrapped_stats.py --root empty --out empty.json
+          python skills/claude-wrapped/scripts/render.py empty.json -o empty.html
+          python tests/browser_check.py demo.html empty.html
