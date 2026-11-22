@@ -33,13 +33,13 @@ jobs:
         run: python skills/claude-wrapped/scripts/render.py examples/demo-stats.json examples/demo-story.json -o demo.html
 
   browsers:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - run: pip install playwright==1.55.0 && python -m playwright install --with-deps chromium firefox webkit
+      - run: pip install playwright==1.63.0 && python -m playwright install --with-deps chromium firefox webkit
       - run: |
           python skills/claude-wrapped/scripts/render.py examples/demo-stats.json examples/demo-story.json -o demo.html
           mkdir -p empty && python skills/claude-wrapped/scripts/wrapped_stats.py --root empty --out empty.json
