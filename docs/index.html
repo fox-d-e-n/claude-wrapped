@@ -1,0 +1,266 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Claude Wrapped</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{color-scheme:dark;--merlot:#5B1A2B;--persimmon:#E8613C;--lemon:#F2D35B;--sage:#9DB39A;--plum:#3B2340;--pink:#F4B6C2;--ink:#17121A;--linen:#F5EFE6;--white:#FFFDF8;--cobalt:#183A78;--teal:#174F4B;--coral:#B9422E;--blue:#A9D5F0;--mono:'JetBrains Mono',monospace;--body:'Instrument Sans',sans-serif;--display:'Bricolage Grotesque',sans-serif;--deep-blue:#243F6F;--berry:#8E214F;--forest:#355B43;--forest-text:#FFF4D4;--sky:#B9DFF0;--sky-ink:#183A55;--midnight:#312044;--midnight-text:#FFF3E8;--violet:#40345C;--violet-text:#F5F1FF;--pale-blue:#B8DDFC;--ink-muted:#493F44;--bar-blue:#9FC9E8;--bar-fog:#B8D7EC;--bar-silver:#D2DAE2;--bar-coral:#F38C68;--hist-blue:#3D7F9D;--hist-orange:#D77B21;--receipt-rule:#80766D;--receipt-dash:#91877F;--receipt-dot:#786E65;--progress-track:rgba(255,255,255,.28);--tag-wash:rgba(255,253,248,.32);--tool-wash:rgba(23,18,26,.13);--stage-wash:rgba(255,255,255,.1)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--ink);color:var(--linen);font-family:var(--body);overflow:hidden}
+.story{height:100vh;height:100svh;height:100dvh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;scrollbar-width:none}
+.story::-webkit-scrollbar{display:none}
+.progress{position:fixed;z-index:10;top:env(safe-area-inset-top,0px);left:0;right:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding-top:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));pointer-events:none}
+.progress i{height:3px;background:var(--progress-track);border-radius:9px;overflow:hidden}
+.progress i b{display:block;width:0;height:100%;background:currentColor;transition:width .28s ease}
+.slide{position:relative;display:flex;align-items:center;justify-content:center;min-height:100vh;min-height:100svh;min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.inner{width:min(100%,980px);padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-block:clamp(54px,9vh,92px) clamp(38px,7vh,68px);position:relative;z-index:1}
+.eyebrow,.receipt-label,.mono{font-family:var(--mono);font-size:clamp(.59rem,1.6vw,.72rem);line-height:1.55;letter-spacing:.08em;text-transform:uppercase}
+.eyebrow{opacity:.8;margin:0 0 clamp(18px,3vh,30px)}
+h1,h2,p{margin-top:0}
+h1{font-family:var(--display);font-size:clamp(3.1rem,11vw,7.4rem);line-height:.91;letter-spacing:-.065em;font-weight:800;margin-bottom:18px;max-width:900px}
+h1 .stat{font-size:clamp(4rem,22vw,11rem);letter-spacing:-.075em;line-height:.78;display:block;font-variant-numeric:tabular-nums;white-space:nowrap}
+h1.medium{font-size:clamp(2.8rem,8.6vw,6.2rem)}
+h1.medium .stat{font-size:clamp(3.5rem,16vw,8.5rem)}
+h1.small{font-size:clamp(2.1rem,7vw,4.2rem);margin-bottom:12px}
+.caption{font-size:clamp(1rem,2.35vw,1.32rem);line-height:1.4;max-width:640px;margin-bottom:24px}
+.detail{max-width:630px;border-top:1px solid currentColor;padding-top:11px;display:grid;gap:5px}
+.detail .receipt-label{display:flex;gap:.65ch;align-items:baseline;min-width:0}
+.detail .receipt-label span:first-child{white-space:nowrap}
+.detail .receipt-label .dots{flex:1;overflow:hidden;white-space:nowrap;opacity:.55;letter-spacing:.04em}
+.detail .receipt-label span:last-child{text-align:right}
+.tally{font-variant-numeric:tabular-nums}
+.slide:after{content:"";position:absolute;inset:auto -14vw -26vh auto;width:45vw;height:45vw;max-width:540px;max-height:540px;border-radius:50%;border:1px solid currentColor;opacity:.13;pointer-events:none}
+[data-slide=first]{background:var(--linen);color:var(--merlot);--rail:var(--merlot)}
+[data-slide=playlist]{background:var(--lemon);color:var(--cobalt);--rail:var(--cobalt)}
+[data-slide=switch]{background:var(--plum);color:var(--linen);--rail:var(--lemon)}
+[data-slide=months]{background:var(--deep-blue);color:var(--white);--rail:var(--persimmon)}
+[data-slide=busiest]{background:var(--berry);color:var(--white);--rail:var(--lemon)}
+[data-slide=streak]{background:var(--forest);color:var(--forest-text);--rail:var(--lemon)}
+[data-slide=clock]{background:var(--sky);color:var(--sky-ink);--rail:var(--sky-ink)}
+[data-slide=agents]{background:var(--midnight);color:var(--midnight-text);--rail:var(--persimmon)}
+[data-slide=tools]{background:var(--coral);color:var(--linen);--rail:var(--lemon)}
+[data-slide=models]{background:var(--violet);color:var(--violet-text);--rail:var(--pale-blue)}
+[data-slide=projects]{background:var(--teal);color:var(--linen);--rail:var(--persimmon)}
+[data-slide=receipt]{background:var(--linen);color:var(--ink);--rail:var(--coral)}
+[data-slide=built]{background:var(--merlot);color:var(--linen);--rail:var(--lemon)}
+[data-slide=ramp]{background:var(--cobalt);color:var(--white);--rail:var(--persimmon)}
+[data-slide^=spotlights]{background:var(--persimmon);color:var(--ink);--rail:var(--ink)}
+.kicker{font-family:var(--mono);font-size:clamp(.66rem,1.8vw,.8rem);letter-spacing:.08em;text-transform:uppercase;opacity:.8;margin-bottom:15px}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:9px;max-width:690px;margin:14px 0 23px}
+.tag{display:inline-flex;align-items:center;border:1.5px solid currentColor;border-radius:4px;padding:.37em .56em;font-family:var(--display);font-weight:700;line-height:1;font-size:calc(1rem + var(--weight)*.026rem);background:var(--tag-wash)}
+.tag strong{font:600 .62em var(--mono);margin-left:.65em}
+.note{font-family:var(--mono);font-size:.7rem;letter-spacing:.055em;margin-top:10px;opacity:.78}
+.bar-chart{width:min(100%,720px);margin:26px 0 14px}
+.bars{height:clamp(126px,26vh,228px);display:flex;align-items:end;gap:clamp(9px,2.4vw,22px);border-bottom:1px solid currentColor;padding:0 2px}
+.bar-col{height:100%;flex:1;display:flex;flex-direction:column;justify-content:end;align-items:stretch;min-width:0}
+.bar{height:var(--height);background:var(--bar);min-height:7px;position:relative;border-radius:3px 3px 0 0}
+.bar b{position:absolute;top:8px;left:50%;transform:translateX(-50%);font:700 clamp(.57rem,1.8vw,.78rem) var(--mono);color:var(--ink);white-space:nowrap}
+.bar.low b{top:auto;bottom:100%;margin-bottom:4px;color:currentColor}
+.bar-label{font:500 clamp(.55rem,1.65vw,.73rem) var(--mono);text-align:center;padding-top:7px;white-space:nowrap}
+.dense .bars{gap:3px}
+.dense .bar b{display:none}
+.has-rows .bars{height:clamp(96px,15vh,132px)}
+.has-rows .bar-chart{margin:16px 0 8px}
+.mrows{display:grid;gap:5px;width:min(100%,720px);margin:0 0 12px}
+.mrow{display:grid;grid-template-columns:3.4em 1fr;gap:8px;font:500 clamp(.62rem,1.7vw,.74rem)/1.35 var(--mono);letter-spacing:.03em}
+.mrow b{font-weight:700;letter-spacing:.08em}
+.histogram{width:min(100%,680px);margin:26px 0 18px}
+.hist-bars{height:clamp(114px,20vh,170px);display:grid;grid-template-columns:repeat(24,minmax(3px,1fr));gap:clamp(2px,.55vw,5px);align-items:end;border-bottom:1px solid currentColor}
+.hist-bars i{display:block;height:var(--height);min-height:3px;background:var(--hist-blue);border-radius:2px 2px 0 0}
+.hist-bars i.peak{background:var(--hist-orange)}
+.hist-labels{display:flex;justify-content:space-between;margin-top:7px;font:500 .65rem var(--mono)}
+.two-stats{display:flex;gap:clamp(18px,5vw,50px);margin:18px 0 24px;align-items:end}
+.two-stats div{display:flex;flex-direction:column}
+.two-stats strong{font:800 clamp(2.2rem,9vw,5.2rem)/.9 var(--display);letter-spacing:-.065em;font-variant-numeric:tabular-nums}
+.two-stats span{font:500 .67rem var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-top:8px}
+.tool-list{display:grid;gap:8px;width:min(100%,620px);margin:22px 0}
+.tool-row{display:flex;align-items:center;gap:12px;background:var(--tool-wash);padding:8px 12px;border-left:4px solid var(--lemon)}
+.tool-row b{overflow-wrap:anywhere;font:700 clamp(1.15rem,4vw,1.7rem) var(--display);min-width:4.4em}
+.tool-row span{font:500 .68rem var(--mono);margin-left:auto}
+.model-poster{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:26px 0;width:min(100%,620px)}
+.model-poster div{border:1px solid currentColor;padding:14px;min-height:120px;display:flex;flex-direction:column;justify-content:space-between}
+.model-poster strong{font:700 clamp(1.15rem,4vw,1.8rem)/1 var(--display)}
+.model-poster span{font:600 .68rem var(--mono);letter-spacing:.06em}
+.stages{display:grid;gap:7px;max-width:670px;margin:22px 0}
+.stage{padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-left:5px solid var(--lemon);background:var(--stage-wash)}
+.stage:nth-child(2){margin-left:6%}
+.stage:nth-child(3){margin-left:12%}
+.stage span{font:600 .69rem var(--mono);letter-spacing:.045em}
+.stage strong{font:700 clamp(1.2rem,4vw,1.8rem) var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cards{display:grid;gap:7px;width:min(100%,680px);margin:12px 0 16px}
+.card{padding:8px 12px 9px;border-left:5px solid var(--lemon);background:var(--stage-wash)}
+.card-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.card-top strong{font:700 clamp(1.05rem,3.6vw,1.45rem)/1.1 var(--display);letter-spacing:-.02em}
+.card-top span{font:600 .62rem var(--mono);letter-spacing:.06em;white-space:nowrap}
+.card p{margin:3px 0 0;font-size:clamp(.76rem,1.9vw,.92rem);line-height:1.32}
+.lev{display:flex;align-items:center;gap:14px;margin:6px 0 8px}
+.lev strong{font:800 clamp(2.6rem,12vw,4.6rem)/.85 var(--display);letter-spacing:-.07em;font-variant-numeric:tabular-nums}
+.lev span{font:500 .72rem/1.4 var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.timeline{list-style:none;margin:10px 0 0;padding:0 0 0 12px;border-left:2px solid currentColor;display:grid;gap:4px;max-width:600px}
+.tl{display:grid;grid-template-columns:4.4rem 1fr;gap:10px;align-items:baseline;font:500 .66rem/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.tl.hl{padding:5px 10px;background:var(--stage-wash);border-left:5px solid var(--lemon);margin-left:-5px;text-transform:none}
+.tl.hl b{font:700 clamp(1rem,3.4vw,1.25rem)/1.1 var(--display);letter-spacing:-.01em}
+.spots{display:grid;gap:10px;width:min(100%,720px);margin:12px 0}
+.spot{border:1.5px solid currentColor;background:var(--tool-wash);padding:10px 14px 11px}
+.spot .k{font:600 .64rem var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.spot .big{display:block;font:800 clamp(2.1rem,10vw,3.6rem)/.95 var(--display);letter-spacing:-.065em;font-variant-numeric:tabular-nums;margin:3px 0 2px}
+.spot h2{font:700 clamp(1rem,3.4vw,1.35rem)/1.1 var(--display);letter-spacing:-.02em;margin:0 0 3px}
+.spot p{font-size:clamp(.78rem,1.9vw,.95rem);line-height:1.3;margin:0}
+.receipt{border:1px solid var(--receipt-rule);background:var(--linen);padding:clamp(15px,4vw,26px);width:min(100%,650px);box-shadow:7px 8px 0 var(--tool-wash);font-size:clamp(.78rem,2vw,.95rem)}
+.receipt-head{font:700 .72rem var(--mono);letter-spacing:.065em;text-align:center;padding-bottom:12px;border-bottom:1px dashed var(--receipt-dash);margin-bottom:9px}
+.receipt-line{display:flex;justify-content:space-between;gap:12px;padding:3px 0;font-size:.9em;line-height:1.35}
+.receipt-line .dots{flex:1;min-width:12px;border-bottom:1px dotted var(--receipt-dot);height:.9em}
+.receipt-line span:last-child{text-align:right}
+.receipt-total{border-top:1px dashed var(--receipt-dash);margin-top:8px;padding-top:10px;font:800 clamp(1.2rem,4.6vw,1.8rem) var(--display);letter-spacing:-.035em;text-align:center}
+.receipt-foot{font-size:.76em;line-height:1.45;text-align:center;margin:10px 0 0}
+.receipt-source{font-size:.56rem;line-height:1.5;letter-spacing:.035em;text-align:center;margin:11px 0 0}
+.copy-btn{appearance:none;border:1px solid var(--ink);background:var(--ink);color:var(--linen);font:600 .74rem var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:11px 15px;margin-top:15px;cursor:pointer}
+.copy-btn:hover{background:var(--ink-muted)}
+.copy-btn:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+.copy-fallback{position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:.01}
+.nav-hint{font:500 .61rem var(--mono);letter-spacing:.07em;text-transform:uppercase;opacity:.63;margin-top:16px}
+[data-slide=receipt] .inner{padding-block:clamp(48px,7vh,70px) clamp(28px,5vh,48px)}
+[data-slide=receipt] h1{font-size:clamp(2.5rem,8vw,5rem);margin-bottom:12px}
+[data-slide=receipt] .caption{font-size:clamp(.91rem,2.1vw,1.12rem);margin-bottom:15px}
+[data-slide=first] h1{font-size:clamp(2.8rem,8vw,5.4rem)}
+[data-slide=first] h1 .stat{font-size:clamp(2.7rem,9.8vw,6.5rem);line-height:.91;white-space:normal}
+[data-slide=switch] h1 .stat{font-size:clamp(3.4rem,14vw,7.5rem)}
+[data-slide=agents] h1 .stat{font-size:clamp(3.6rem,17vw,8.7rem)}
+[data-slide=built] .inner,[data-slide=ramp] .inner,[data-slide^=spotlights] .inner{padding-block:clamp(46px,7vh,80px) clamp(28px,5vh,56px)}
+[data-slide=built] .caption,[data-slide=ramp] .caption,[data-slide^=spotlights] .caption{font-size:clamp(.88rem,2.1vw,1.1rem);margin-bottom:10px}
+@media(min-width:700px){.spots{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.inner{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}.tag-cloud{gap:7px}.receipt{padding:13px}.receipt-line{font-size:.82em}[data-slide=receipt] .eyebrow{margin-bottom:10px}[data-slide=receipt] .detail{padding-top:7px}.eyebrow{margin-bottom:14px}[data-slide=months] h1,[data-slide=ramp] h1{margin-bottom:10px}}
+@media(max-height:720px){.inner{padding-block:48px 32px}.eyebrow{margin-bottom:12px}h1{margin-bottom:12px}.caption{margin-bottom:16px}.bar-chart,.histogram{margin-block:17px 10px}.tool-list,.stages,.model-poster{margin-block:16px}[data-slide=receipt] .inner{padding-block:44px 20px}}
+#sound{position:fixed;z-index:11;top:calc(env(safe-area-inset-top,0px) + 20px);right:max(16px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:8px;appearance:none;border:1px solid rgba(255,253,248,.35);background:rgba(23,18,26,.62);color:var(--white);font:600 .62rem var(--mono);letter-spacing:.07em;text-transform:uppercase;padding:7px 11px;border-radius:99px;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);max-width:calc(100vw - 32px);white-space:nowrap}
+#sound:focus-visible{outline:3px solid var(--lemon);outline-offset:2px}
+.eq{display:flex;align-items:flex-end;gap:2px;height:10px}
+.eq i{width:2px;height:30%;background:currentColor}
+#sound[aria-pressed=true] .eq i{animation:eq .9s ease-in-out infinite alternate}
+#sound[aria-pressed=true] .eq i:nth-child(2){animation-delay:-.3s}
+#sound[aria-pressed=true] .eq i:nth-child(3){animation-delay:-.6s}
+@keyframes eq{to{height:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}.progress i b{transition:none}.tally{font-variant-numeric:tabular-nums}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Instrument+Sans:wght@400;600&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<div class="progress" aria-hidden="true"></div>
+<button id="sound" type="button" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span id="sound-label">Tap for sound</span></button>
+<main class="story" aria-label="Claude Wrapped story"></main>
+<script>
+// Builds the slides from W (stats from scripts/wrapped_stats.py + W.story written by Claude). A slide with no data is left out.
+(()=>{
+const W={"range": {"start": "2026-02-03", "end": "2026-11-20"}, "first_session": "2026-02-03", "sessions": 1420, "automated_sessions": 512, "prompts": 8210, "tokens_total": 21480000000, "output_tokens": 96400000, "months": [{"month": "2026-02", "tokens": 120000000, "prompts": 210}, {"month": "2026-03", "tokens": 410000000, "prompts": 380}, {"month": "2026-04", "tokens": 690000000, "prompts": 520}, {"month": "2026-05", "tokens": 1180000000, "prompts": 640}, {"month": "2026-06", "tokens": 1520000000, "prompts": 700}, {"month": "2026-07", "tokens": 2050000000, "prompts": 810}, {"month": "2026-08", "tokens": 2410000000, "prompts": 900}, {"month": "2026-09", "tokens": 3300000000, "prompts": 1150}, {"month": "2026-10", "tokens": 4620000000, "prompts": 1380}, {"month": "2026-11", "tokens": 5180000000, "prompts": 1520}], "busiest_day": {"date": "2026-10-14", "tokens": 640000000, "prompts": 233}, "streak": {"days": 41, "end": "2026-11-02"}, "hours": [3, 1, 0, 0, 0, 2, 31, 140, 380, 610, 790, 840, 620, 700, 760, 730, 690, 560, 410, 330, 270, 190, 110, 23], "tools": [{"name": "Bash", "calls": 61200}, {"name": "Read", "calls": 24800}, {"name": "Edit", "calls": 18300}, {"name": "Grep", "calls": 9100}, {"name": "Write", "calls": 7400}], "models": [{"name": "claude-opus-5-5", "requests": 88200}, {"name": "claude-sonnet-5-5", "requests": 31900}, {"name": "claude-haiku-5-5", "requests": 9600}], "projects": [{"name": "web-app", "tokens": 7900000000}, {"name": "data-pipeline", "tokens": 5100000000}, {"name": "infra", "tokens": 3200000000}], "projects_share": 0.76, "title_words": [{"word": "fix", "count": 88}, {"word": "tests", "count": 71}, {"word": "api", "count": 64}, {"word": "deploy", "count": 52}, {"word": "dashboard", "count": 47}, {"word": "refactor", "count": 39}, {"word": "auth", "count": 33}, {"word": "release", "count": 28}], "top_word": {"word": "ship", "count": 412, "runners": [{"word": "tests", "count": 297}, {"word": "looks", "count": 240}]}, "latest_prompt": {"date": "2026-09-19", "time": "3:52 AM"}, "longest_session": {"hours": 141.5, "title": "Migrate billing to the new API"}, "biggest_session": {"tokens": 410000000, "title": "Monorepo test suite overhaul"}, "most_edited_file": {"name": "App.tsx", "edits": 1730, "runner": {"name": "schema.sql", "edits": 902}}, "pull_requests": 684, "firsts": {"mcp": "2026-03-11", "plan_mode": "2026-02-20", "subagent": "2026-04-02", "skill": "2026-05-15", "commit": "2026-02-04", "pull_request": "2026-02-17", "worktree": "2026-07-08"}, "work_per_prompt_growth": 6.0, "novels": 803, "story": {"name": "Demo Developer", "intro": "From fixing one bug at a time to agents that open their own pull requests.", "month_notes": {"2026-03": "First connectors and plan mode", "2026-05": "Skills for tests and releases", "2026-07": "Worktrees: three tasks at once", "2026-09": "Scheduled agents for the nightly build", "2026-11": "Billing migration and the dashboard rebuild"}, "built": [{"title": "Release bot", "when": "MAY 2026", "what": "Cuts the changelog, tags and drafts the release notes"}, {"title": "Test doctor", "when": "JUL 2026", "what": "Finds flaky tests and opens a fix PR"}, {"title": "Nightly agents", "when": "SEP 2026", "what": "Scheduled runs that triage issues before standup"}, {"title": "New dashboard", "when": "NOV 2026", "what": "Usage and revenue in one page"}], "eras": [{"date": "2026-02-03", "label": "Chatting in the terminal"}, {"date": "2026-05-01", "label": "Skills and subagents"}, {"date": "2026-09-01", "label": "Agents on a schedule"}], "source_note": "Demo data: every number on this page is made up."}};
+const story=document.querySelector('.story');
+if(!W){story.innerHTML='<section class="slide" data-slide="first"><div class="inner"><h1 class="small">No data yet</h1><p class="caption">Run scripts/render.py to fill this page.</p></div></section>';return}
+const S=W.story||{};
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const N=n=>Number(n||0).toLocaleString('en-US');
+const parts=n=>n>=1e9?[Math.round(n/1e8)/10,1,'B']:n>=1e6?[Math.round(n/1e6),0,'M']:n>=1e3?[Math.round(n/1e3),0,'K']:[n,0,''];
+const tok=n=>n>=1e9?(n/1e9).toFixed(n>=1e10?1:2)+'B':n>=1e6?Math.round(n/1e6)+'M':n>=1e3?Math.round(n/1e3)+'K':String(n||0);
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const D=s=>{const[y,m,d]=String(s).split('-').map(Number);return new Date(y,m-1,d||1)};
+const md=s=>s?MON[D(s).getMonth()]+' '+D(s).getDate():'';
+const my=s=>(MON[D(s).getMonth()]+' '+D(s).getFullYear()).toUpperCase();
+const wd=s=>D(s).toLocaleDateString('en-US',{weekday:'long'});
+const long=s=>D(s).toLocaleDateString('en-US',{month:'long',day:'numeric'});
+const mn=k=>MON[+k.slice(5,7)-1];
+const model=id=>{const m=String(id).replace(/^claude-/,'').replace(/-\d{8}$/,'').split('-'),i=m.findIndex(x=>/^[a-z]/i.test(x));if(i<0)return String(id);const f=m[i],v=m.filter((x,j)=>j!==i).join('.');return f[0].toUpperCase()+f.slice(1)+(v?' '+v:'')};
+const tally=(v,dc,sf,tag='span',cls='stat')=>`<${tag} class="${cls} tally" data-target="${v}" data-decimals="${dc}" data-suffix="${esc(sf)}">${Number(v).toLocaleString('en-US',{minimumFractionDigits:dc,maximumFractionDigits:dc})}${esc(sf)}</${tag}>`;
+const detail=rows=>rows.length?`<div class="detail">${rows.map(([k,v])=>`<div class="receipt-label"><span>${esc(k)}</span><span class="dots">..............................</span><span>${esc(v)}</span></div>`).join('')}</div>`:'';
+const spot=(k,big,h,p)=>`<div class="spot"><div class="k">${esc(k)}</div><strong class="big">${esc(big)}</strong><h2>${esc(h)}</h2><p>${esc(p)}</p></div>`;
+const slides=[],add=(key,title,body)=>slides.push([key,title,body]);
+const year=String(W.range&&W.range.end||'').slice(0,4);
+const who=[`Claude Wrapped ${year}`,S.name].filter(Boolean).join(' \u00b7 ');
+
+add('first','THE FIRST POUR',`<p class="kicker">${esc(who)}</p><h1 class="medium">Your year began on<span class="stat">${md(W.first_session)}</span></h1><p class="caption">${esc(S.intro||`${N(W.sessions)} sessions and ${N(W.prompts)} prompts later, here is your year with Claude.`)}</p>${detail([['FIRST SESSION',W.first_session],...(S.extra_firsts||[]).map(x=>[String(x.label).toUpperCase(),x.date])])}<p class="nav-hint">A year of work, one prompt at a time \u00b7 tap or swipe to begin</p>`);
+
+const tw=W.title_words||[];
+if(tw.length>=3)add('playlist','THE PLAYLIST',`<h1 class="medium">Your work had a few recurring tracks</h1><div class="tag-cloud" aria-label="Most common words in session titles">${tw.map(t=>`<span class="tag" style="--weight:${Math.round(t.count/tw[0].count*36)}">${esc(t.word)}<strong>${N(t.count)}</strong></span>`).join('')}</div><p class="caption">&quot;${esc(tw[0].word)}&quot; was on repeat across your session titles.</p>${detail([['TOP TITLE WORD',`${String(tw[0].word).toUpperCase()} - ${N(tw[0].count)}`]])}`);
+
+if(S.switch&&S.switch.date)add('switch','A NEW INSTRUMENT',`<h1 class="medium">${md(S.switch.date)}: ${esc(S.switch.title)}</h1><p class="caption">${esc(S.switch.caption||'')}</p>${detail([[S.switch.label||'THE SWITCH',S.switch.date]])}`);
+
+const ms=W.months||[];
+if(ms.length>=2){const mx=Math.max(...ms.map(m=>m.tokens))||1,pk=ms.find(m=>m.tokens===mx),cols=['var(--bar-blue)','var(--bar-fog)','var(--bar-silver)','var(--bar-coral)'],[v,dc,sf]=parts(mx),notes=Object.entries(S.month_notes||{}).filter(([k])=>ms.some(m=>m.month===k)).sort();
+add('months','THE MONTHLY CRESCENDO',`<h1 class="medium">${D(pk.month).toLocaleDateString('en-US',{month:'long'})} turned the volume up${tally(v,dc,sf)}</h1><div class="bar-chart${notes.length?' has-rows':''}${ms.length>12?' dense':''}" role="img" aria-label="Tokens by month: ${ms.map(m=>mn(m.month).toUpperCase()+' '+tok(m.tokens)).join(', ')}"><div class="bars">${ms.map((m,i)=>{const h=m.tokens/mx*100;return `<div class="bar-col"><div class="bar${h<30?' low':''}" style="--height:${h.toFixed(1)}%;--bar:${m===pk?'var(--lemon)':cols[i%4]}"><b>${tok(m.tokens)}</b></div><span class="bar-label">${mn(m.month).toUpperCase()}</span></div>`}).join('')}</div></div>${notes.length?`<div class="mrows">${notes.map(([k,t])=>`<div class="mrow"><b>${mn(k).toUpperCase()}</b><span>${esc(t)}</span></div>`).join('')}</div>`:''}${detail([[`${mn(pk.month).toUpperCase()} TOKENS`,tok(mx)]])}`)}
+
+if(S.built&&S.built.length)add('built','THE THINGS YOU MADE',`<h1 class="small">What you built</h1><p class="caption">${esc(S.built_caption||'Skills, agents and tools that now do work for you.')}</p><div class="cards">${S.built.slice(0,6).map(b=>`<div class="card"><div class="card-top"><strong>${esc(b.title)}</strong><span>${esc(b.when||'')}</span></div><p>${esc(b.what||'')}</p></div>`).join('')}</div>${detail([S.systems_built!=null&&['SYSTEMS CREATED',N(S.systems_built)],W.pull_requests&&['PULL REQUESTS',N(W.pull_requests)]].filter(Boolean))}`);
+
+const FL={mcp:'First connector (MCP)',plan_mode:'First plan mode',subagent:'First subagent',skill:'First skill',commit:'First commit',pull_request:'First pull request',worktree:'First worktree'};
+const tl=[...(S.eras||[]).map(e=>({d:e.date,hl:1,t:e.label})),...Object.entries(W.firsts||{}).filter(([,d])=>d).map(([k,d])=>({d,hl:0,t:FL[k]||k}))].sort((a,b)=>String(a.d).localeCompare(b.d)||b.hl-a.hl);
+if(tl.length>=3||W.work_per_prompt_growth)add('ramp','THE SKILL RAMP',`<h1 class="small">How your building grew</h1>${W.work_per_prompt_growth?`<div class="lev">${tally(W.work_per_prompt_growth,1,'x','strong','')}<span>more work per prompt than when you started</span></div>`:''}<p class="caption">${esc(S.ramp_caption||'From typing every request, to skills and subagents, to work that runs on its own.')}</p><ol class="timeline">${tl.map(x=>x.hl?`<li class="tl hl"><span>${my(x.d)}</span><b>${esc(x.t)}</b></li>`:`<li class="tl"><span>${md(x.d)}</span><span>${esc(x.t)}</span></li>`).join('')}</ol>`);
+
+const b=W.busiest_day;
+if(b){const[v,dc,sf]=parts(b.tokens);add('busiest','MAIN-CHARACTER ENERGY',`<p class="kicker">${wd(b.date)} - ${long(b.date)}, ${b.date.slice(0,4)}</p><h1 class="medium">A day with main-character energy${tally(v,dc,sf)}</h1><p class="caption">One ${wd(b.date)} carried the heaviest load of your year.</p><div class="two-stats"><div>${tally(b.prompts,0,'','strong','')}<span>prompts</span></div><div><strong>${wd(b.date)}</strong><span>${long(b.date)}</span></div></div>${detail([['DAY TOKENS',tok(b.tokens)],['DAY PROMPTS',N(b.prompts)]])}`)}
+
+const st=W.streak;
+if(st&&st.days>=2)add('streak','THE STREAK WAS REAL',`<h1 class="medium">One more day became a long run${tally(st.days,0,' days')}</h1><p class="caption">${N(st.days)} consecutive days with at least one prompt.</p><p class="note">ENDING ${md(st.end).toUpperCase()} ${st.end.slice(0,4)}</p>${detail([['LONGEST STREAK',st.days+' DAYS'],['LAST DAY',st.end]])}`);
+
+const hs=W.hours||[],hm=Math.max(0,...hs);
+if(hm){const h=hs.indexOf(hm),h12=(h%12||12)+(h<12?'A':'P'),name=h===12?'Noon':h===0?'Midnight':(h%12||12)+(h<12?' AM':' PM'),title=h>=5&&h<12?'MORNING PERSON':h>=12&&h<14?'LUNCH-HOUR POWER USER':h>=14&&h<18?'AFTERNOON ENGINE':h>=18&&h<22?'EVENING SHIFT':'NIGHT OWL';
+add('clock',title,`<h1 class="medium">${name} was your hour${tally(hm,0,'')}</h1><p class="caption">${h===12?'Your busiest hour came with a side of lunch.':`More prompts landed at ${name} than at any other hour.`}</p><div class="histogram" role="img" aria-label="Prompts by hour, local time. ${name} is the busiest hour with ${N(hm)} prompts"><div class="hist-bars">${hs.map((c,i)=>`<i${i===h?' class="peak"':''} style="--height:${(c/hm*100).toFixed(1)}%"></i>`).join('')}</div><div class="hist-labels"><span>12a</span><span>6a</span><span>12p</span><span>6p</span><span>12a</span></div></div>${detail([['PEAK HOUR - LOCAL TIME',`${h12} - ${N(hm)}`]])}`)}
+
+if(W.automated_sessions)add('agents','WORK IN MOTION',`<h1 class="medium">${tally(W.automated_sessions,0,'')} sessions ran on their own</h1><p class="caption">${N(W.automated_sessions)} of ${N(W.sessions)} sessions started without you typing in a terminal.</p>${detail([['SESSIONS STARTED BY AUTOMATION',N(W.automated_sessions)],['ALL SESSIONS',N(W.sessions)]])}`);
+
+const t=W.tools||[];
+if(t.length)add('tools','THE TOOLS IN HEAVY ROTATION',`<h1 class="medium">${esc(t[0].name)} led the backstage${tally(t[0].calls,0,'')}</h1><p class="caption">A familiar crew kept the backstage humming.</p><div class="tool-list">${t.slice(0,3).map(x=>`<div class="tool-row"><b>${esc(x.name)}</b><span>${N(x.calls)} CALLS</span></div>`).join('')}</div>${detail([['TOP TOOL',String(t[0].name).toUpperCase()]])}`);
+
+const mo=W.models||[];
+if(mo.length)add('models','YOUR MODEL LINEUP',`<h1 class="medium">The headliner had a long encore</h1><p class="caption">${esc(model(mo[0].name))} led the bill${mo[1]?`, with ${esc(model(mo[1].name))} as the opening act`:''}.</p><div class="model-poster">${mo.slice(0,2).map(x=>`<div><strong>${esc(model(x.name))}</strong><span>${N(x.requests)} REQUESTS</span></div>`).join('')}</div>${detail([['TOP MODEL',model(mo[0].name).toUpperCase()]])}`);
+
+const pj=(W.projects||[]).slice(0,3).map(p=>({...p,name:(S.project_names||{})[p.name]||p.name}));
+if(pj.length)add('projects','THE PROJECTS THAT FILLED THE SETLIST',`<h1 class="medium">${['One big stage','Two big stages','Three big stages'][pj.length-1]} hosted the work</h1>${W.projects_share?`<p class="caption">${pj.length>1?'Together they':'It'} held ${Math.round(W.projects_share*100)}% of your tokens.</p>`:''}<div class="stages">${pj.map(p=>`<div class="stage"><span>${esc(String(p.name).toUpperCase())}</span><strong>${tok(p.tokens)}</strong></div>`).join('')}</div>${detail([['TOP STAGE',String(pj[0].name).toUpperCase()]])}`);
+
+const tw2=W.top_word,lp=W.latest_prompt,ls=W.longest_session,bs=W.biggest_session,mf=W.most_edited_file;
+const sp1=[tw2&&spot('Your most-typed word',N(tw2.count)+'x',`"${tw2.word}"`,(tw2.runners||[]).length?`Ahead of ${tw2.runners.map(r=>`"${r.word}" (${N(r.count)})`).join(' and ')}.`:''),
+lp&&spot('Latest night',lp.time,long(lp.date),'The latest prompt of your year.'),
+ls&&spot('Longest session',ls.hours+' hrs',ls.title||'Untitled session',`One session kept open for ${ls.hours} hours.`)].filter(Boolean);
+if(sp1.length)add('spotlights','SPOTLIGHTS',`<h1 class="small">Fun spotlights</h1><p class="caption">A few things only your history could say.</p><div class="spots">${sp1.join('')}</div>`);
+const sp2=[bs&&spot('Biggest session',tok(bs.tokens)+' tokens',bs.title||'Untitled session',`One session, ${tok(bs.tokens)} tokens.`),
+mf&&spot('Most-edited file',N(mf.edits)+' edits',mf.name,mf.runner?`The file Claude touched most, ahead of ${mf.runner.name} at ${N(mf.runner.edits)}.`:'The file Claude touched most.')].filter(Boolean);
+if(sp2.length)add('spotlights2','MORE SPOTLIGHTS',`<h1 class="small">More spotlights</h1><p class="caption">A few more from the logbook.</p><div class="spots">${sp2.join('')}</div>`);
+
+const lines=[['Sessions',N(W.sessions)],['Prompts',N(W.prompts)],b&&['Busiest day',`${wd(b.date).slice(0,3)} ${md(b.date)}`],st&&['Streak',st.days+' days'],S.systems_built!=null&&['Systems built',N(S.systems_built)],W.pull_requests&&['Pull requests',N(W.pull_requests)],t[0]&&['Top tool',t[0].name],mo[0]&&['Top model',model(mo[0].name)],W.novels&&['Novels of output',`~${N(W.novels)} (estimate)`]].filter(Boolean);
+const head=[S.org,`CLAUDE WRAPPED ${year}`+(S.name?' \u00b7 '+S.name:'')].filter(Boolean),total=`${tok(W.tokens_total)} TOKENS`;
+const text=[head.join(' \u00b7 '),...lines.map(([k,v])=>k+': '+v),'TOTAL: '+total,'Thank you for dining with Claude'].join('\n');
+add('receipt','THE LAST CHECK',`<h1>${W.novels?'A year, in novels':'A year, on one receipt'}</h1><p class="caption">A library-sized year of thinking, drafting, and building.</p><div class="receipt" id="receipt"><div class="receipt-head">${head.map(esc).join('<br>')}</div>${lines.map(([k,v])=>`<div class="receipt-line"><span>${esc(k)}</span><i class="dots"></i><span>${esc(v)}</span></div>`).join('')}<div class="receipt-total">${total}</div><p class="receipt-foot">Thank you for dining with Claude</p><p class="receipt-source mono">Source: local Claude Code transcripts, ${esc(W.range&&W.range.start)} to ${esc(W.range&&W.range.end)}.${S.source_note?' '+esc(S.source_note):''}</p></div><button class="copy-btn" type="button" id="copy-summary">Copy summary</button><textarea class="copy-fallback" id="receipt-copy" readonly aria-label="Plain text receipt summary">${esc(text)}</textarea><p class="nav-hint" id="copy-status" aria-live="polite">${esc(head.join(' \u00b7 '))}</p>`);
+
+const pad=n=>String(n).padStart(2,'0');
+story.innerHTML=slides.map(([k,title,body],i)=>`<section class="slide" data-slide="${k}"><div class="inner"><p class="eyebrow">SLIDE ${pad(i+1)} / ${pad(slides.length)} \u00b7 ${esc(title)}</p>${body}</div></section>`).join('');
+document.title=`Claude Wrapped ${year}`;story.setAttribute('aria-label',`Claude Wrapped ${year} story`);
+})();
+</script>
+<script>
+// Generative soundtrack (Web Audio, no files): one track per slide, intensity follows the story arc.
+window.wrappedMusic=(()=>{
+const C={I:[0,4,7],i:[0,3,7],ii:[2,5,9],iii:[4,7,11],IV:[5,9,12],iv:[5,8,12],V:[7,11,14],v:[7,10,14],vi:[9,12,16],bVI:[8,12,15],bVII:[10,14,17]};
+// [title, bpm, root midi, progression, intensity 0-1]
+const T={first:['First Pour',84,48,'I V vi IV',.15],playlist:['On Repeat',96,50,'I vi IV V',.35],switch:['New Instrument',100,45,'i bVI bVII i',.3],months:['Crescendo',108,48,'vi IV I V',.6],built:['The Build',112,50,'I iii IV V',.65],ramp:['Skill Ramp',116,52,'IV V vi I',.7],busiest:['Main Character',124,45,'i bVII bVI bVII',1],streak:['The Streak',120,48,'I V vi IV',.85],clock:['Peak Hour',92,53,'ii V I vi',.3],agents:['On Their Own',126,45,'i iv bVI bVII',.95],tools:['Backstage',118,47,'i bVII bVI v',.8],models:['Long Encore',110,50,'IV I V vi',.55],projects:['Three Stages',120,48,'I V vi IV',.85],spotlights:['After Hours',100,45,'i bVI bVII iv',.5],spotlights2:['Deep Cuts',112,50,'vi IV I V',.75],receipt:['Last Check',80,48,'IV V I I',.2]};
+const btn=document.getElementById('sound'),label=document.getElementById('sound-label');
+let ctx,master,noise,timer,trk=T.first,num=1,step=0,next=0,on=false,muted=false;
+try{muted=localStorage.getItem('wrapped-sound')==='off'}catch(e){}
+const hz=m=>440*2**((m-69)/12);
+function tone(type,m,t,d,v,cut,a=.01){const o=ctx.createOscillator(),f=ctx.createBiquadFilter(),g=ctx.createGain();o.type=type;o.frequency.value=hz(m);f.frequency.value=cut;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(f).connect(g).connect(master);o.start(t);o.stop(t+d+.05)}
+function kick(t){const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(42,t+.12);g.gain.setValueAtTime(.55,t);g.gain.exponentialRampToValueAtTime(.0001,t+.28);o.connect(g).connect(master);o.start(t);o.stop(t+.3)}
+function hat(t){const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type='highpass';f.frequency.value=7000;g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.0001,t+.05);s.connect(f).connect(g).connect(master);s.start(t);s.stop(t+.06)}
+function play(s,t){const[,bpm,root,prog,x]=trk,ch=prog.split(' '),c=C[ch[(s>>4)%ch.length]],st=s%16,sp=15/bpm;
+if(st===0)c.forEach(n=>tone('triangle',root+12+n,t,sp*16,.045,1500,.4));
+if(st===0||st===8||(x>.4&&(st===6||st===14)))tone('triangle',root-12+c[0],t,sp*3,.2,800);
+if(x>.25&&st%2===0)tone('square',root+24+c[[0,1,2,1][st/2%4]]+(st>7?12:0),t,sp*1.6,.03,2400);
+if(x>.5&&st%4===0)kick(t);
+if(x>.7&&st%4===2)hat(t)}
+function tick(){while(next<ctx.currentTime+.12){play(step,next);next+=15/trk[1];step=(step+1)%64}}
+function show(){btn.setAttribute('aria-pressed',String(on));label.textContent=on?String(num).padStart(2,'0')+' \u00b7 '+trk[0]:muted?'Sound off':'Tap for sound';btn.setAttribute('aria-label',on?'Now playing '+trk[0]+'. Mute soundtrack':'Play soundtrack')}
+async function start(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return;ctx=new A();master=ctx.createGain();const comp=ctx.createDynamicsCompressor();master.connect(comp).connect(ctx.destination);noise=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}
+on=true;await ctx.resume();const n=ctx.currentTime;master.gain.cancelScheduledValues(n);master.gain.setValueAtTime(0,n);master.gain.linearRampToValueAtTime(.6,n+.6);next=n+.05;step=0;clearInterval(timer);timer=setInterval(tick,25);show()}
+function stop(){on=false;show();if(!ctx)return;clearInterval(timer);master.gain.setTargetAtTime(0,ctx.currentTime,.08);setTimeout(()=>{if(!on)ctx.suspend()},400)}
+btn.addEventListener('click',()=>{muted=on;try{localStorage.setItem('wrapped-sound',muted?'off':'on')}catch(e){}on?stop():start()});
+function first(e){if(e.target.closest&&e.target.closest('#sound'))return;document.removeEventListener('pointerdown',first);document.removeEventListener('keydown',first);if(!muted&&!on)start()}
+document.addEventListener('pointerdown',first);document.addEventListener('keydown',first);
+document.addEventListener('visibilitychange',()=>{if(!ctx||!on)return;if(document.hidden){clearInterval(timer);ctx.suspend()}else start()});
+show();
+return{to(name,i){trk=T[name]||trk;num=i+1;step=0;if(on)show()}}
+})();
+</script>
+<script>
+(()=>{const story=document.querySelector('.story');const slides=[...document.querySelectorAll('.slide')];const rail=document.querySelector('.progress');slides.forEach(()=>{const i=document.createElement('i');i.appendChild(document.createElement('b'));rail.appendChild(i)});const segments=[...rail.querySelectorAll('b')];const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;let current=0;function progress(index){current=index;window.wrappedMusic&&wrappedMusic.to(slides[index].dataset.slide,index);segments.forEach((bar,i)=>bar.style.width=i<=index?'100%':'0%');document.querySelector('.progress').style.color=getComputedStyle(slides[index]).getPropertyValue('--rail').trim()||'currentColor'}function count(el){if(reduce||el.dataset.counted)return;el.dataset.counted='true';const target=Number(el.dataset.target),decimals=Number(el.dataset.decimals||0),suffix=el.dataset.suffix||'',start=performance.now(),duration=900;function frame(now){const t=Math.min(1,(now-start)/duration),value=target*(1-Math.pow(1-t,3));el.textContent=value.toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals})+suffix;if(t<1)requestAnimationFrame(frame);else el.textContent=target.toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals})+suffix}requestAnimationFrame(frame)}const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){const index=slides.indexOf(entry.target);progress(index);entry.target.querySelectorAll('.tally[data-target]').forEach(count)}}},{root:story,threshold:.58});slides.forEach(slide=>observer.observe(slide));function go(delta){const next=Math.max(0,Math.min(slides.length-1,current+delta));slides[next].scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}document.addEventListener('keydown',event=>{if(event.target.closest('button,textarea,input'))return;if(['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(event.key)){event.preventDefault();go(event.key==='ArrowUp'||event.key==='PageUp'?-1:1)}});slides.forEach(slide=>slide.addEventListener('click',event=>{if(event.target.closest('button,textarea,a'))return;const rect=slide.getBoundingClientRect();if(event.clientX>=rect.left+rect.width/3)go(1);else go(-1)}));const button=document.getElementById('copy-summary'),status=document.getElementById('copy-status'),fallback=document.getElementById('receipt-copy');if(button)button.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(fallback.value);status.textContent='Copied'}catch(error){fallback.focus();fallback.select();status.textContent='Select and copy the receipt summary'}});progress(0)})();
+</script>
+
+</body></html>

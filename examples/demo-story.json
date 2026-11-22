@@ -1,0 +1,23 @@
+{
+ "name": "Demo Developer",
+ "intro": "From fixing one bug at a time to agents that open their own pull requests.",
+ "month_notes": {
+  "2026-03": "First connectors and plan mode",
+  "2026-05": "Skills for tests and releases",
+  "2026-07": "Worktrees: three tasks at once",
+  "2026-09": "Scheduled agents for the nightly build",
+  "2026-11": "Billing migration and the dashboard rebuild"
+ },
+ "built": [
+  {"title": "Release bot", "when": "MAY 2026", "what": "Cuts the changelog, tags and drafts the release notes"},
+  {"title": "Test doctor", "when": "JUL 2026", "what": "Finds flaky tests and opens a fix PR"},
+  {"title": "Nightly agents", "when": "SEP 2026", "what": "Scheduled runs that triage issues before standup"},
+  {"title": "New dashboard", "when": "NOV 2026", "what": "Usage and revenue in one page"}
+ ],
+ "eras": [
+  {"date": "2026-02-03", "label": "Chatting in the terminal"},
+  {"date": "2026-05-01", "label": "Skills and subagents"},
+  {"date": "2026-09-01", "label": "Agents on a schedule"}
+ ],
+ "source_note": "Demo data: every number on this page is made up."
+}
